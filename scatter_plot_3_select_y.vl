@@ -1,0 +1,34 @@
+import "." 
+// as ScatterScene
+
+ScatterPlot { // matreshka !
+  id: s
+
+  property var columnsCount: positions && positions.length > 0 ? positions[0].length : 30
+  property var columnsTitles: computeColumnsTitles(columnsCount)
+  
+  function computeColumnsTitles(n) 
+  {
+    var acc=[];
+    for (var i=0; i<=n; i++)
+      acc.push(i);
+    return acc;
+  }
+  
+  yindex: paramY.value-1
+
+  property alias paramY: iParamY
+  property var ytitle: "Колонка Y"
+
+  Param {
+    //y: 35
+    id: iParamY
+    text: ytitle
+    enableSliding: false
+    values: columnsTitles
+    value: 2 // нумерация с 1 идет
+    min: 0
+    max: columnsCount
+    property var tag: s.controlsTag
+  }  
+}
