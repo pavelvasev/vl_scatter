@@ -13,7 +13,7 @@ ScatterPlotBase {
 
    property var subscribers: []
    
-   property var attach: parent && parent.connectMouseHandlers ? parent : undefined
+   property var attach: parent && parent.connectMouseHandlers ? parent : null
    
    //selection: attach ? attach.selection : undefined
 
@@ -52,13 +52,19 @@ ScatterPlotBase {
    }
    
    
+   property bool attachedToTree: false
    Component.onCompleted: {
+//     console.log("!!!!!!!!!!! scatter completed. attach=",attach );
+//     debugger;
+     
      if (attach) {
+       attachedToTree = true;
        attach.subscribers.push( sp );
+       //console.log( "findRoot().treeSize = ",findRoot().treeSize );
        findRoot().treeSize = findRoot().treeSize+1;
        sp.z = findRoot().treeSize;
        sp.shift = sp.z*20;
-       //console.log("sp.z=",sp.z,"sp.shift=",sp.shift,"this=",this);
+       console.log("sp.z=",sp.z );
        //debugger;
        
        // ех... selection то у него еще не создано, не вычислено.. attach.selection.changed.connect( attachChangedSel );
@@ -66,13 +72,17 @@ ScatterPlotBase {
    }
    
    Component.onDestruction: {
-     if (attach)
+//     console.log("!!!!!!!!!!! scatter destruct. attach=",attach );
+     if (attach && attachedToTree) {
+//       debugger;
+       console.log("decreasing tree size.. before that, findRoot().treeSize=",findRoot().treeSize);
        findRoot().treeSize = findRoot().treeSize-1;
        for (var i=0; i<attach.subscribers.length; i++)
          if (attach.subscribers[i] == sp) {
            attach.subscribers.splice( i,1 );
            break;
          }
+     }
    }
 
    property var rminmax: [] // устанавливаемые пользователем значения 

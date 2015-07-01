@@ -578,6 +578,11 @@ BitmapChart.prototype.mouseMoveHandler = function(event) {
   //console.log("mouse move handl",this.verticalAttribute);
 	//var chart = chartMap[ this.id ]; 
 	var chart = this;
+
+	if (this.shift > 0) {
+	}
+	else
+	{
 	
 	var mouseLabel = $('#mouseLabel'+this.targetDivId);
 	//log( mouseLabel );
@@ -596,6 +601,7 @@ BitmapChart.prototype.mouseMoveHandler = function(event) {
 	else {
 		mouseLabel.stop(true, true).fadeOut();
 	}
+	} 
 
 	if (this.nextMouseMoveHandler) this.nextMouseMoveHandler(event);
 	if (this.nextMouseChart) this.nextMouseChart.mouseMoveHandler(event);
